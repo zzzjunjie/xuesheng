@@ -10,12 +10,29 @@ public class Teacher_Student_Class {
   private String c_name;//课程名
   private Integer c_result;//课程分数
   private String t_id;//教师id
+  private String c_credits;//课程绩点
+  private String c_time;//课程学时
+
+  public String getC_credits() {
+    return c_credits;
+  }
+
+  public void setC_credits(String c_credits) {
+    this.c_credits = c_credits;
+  }
+
+  public String getC_time() {
+    return c_time;
+  }
+
+  public void setC_time(String c_time) {
+    this.c_time = c_time;
+  }
 
   public Teacher_Student_Class() {
   }
 
   @Override
-
   public String toString() {
     return "Teacher_Student_Class{" +
      "s_id=" + s_id +
@@ -27,6 +44,8 @@ public class Teacher_Student_Class {
      ", c_name='" + c_name + '\'' +
      ", c_result=" + c_result +
      ", t_id='" + t_id + '\'' +
+     ", c_credits='" + c_credits + '\'' +
+     ", c_time='" + c_time + '\'' +
      '}';
   }
 

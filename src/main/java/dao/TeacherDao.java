@@ -16,7 +16,7 @@ import java.util.List;
 教师相关操作
  */
 public class TeacherDao {
-  //教师查询自己的所有学生
+  //教师查询自己的所有学生,根据老师的ID
   public List<Teacher_Student> queryStudentByTeach(Teacher teacher){
     String sql = " SELECT * FROM teacher_student where t_id =? ";
     List<Teacher_Student> list = new ArrayList<>();
@@ -63,6 +63,52 @@ public class TeacherDao {
   return list;
   }
 
+  //教师查询所有学生信息
+  public List<Teacher_Student> queryAllStudent(){
+    String sql = " SELECT * FROM teacher_student";
+    List<Teacher_Student> list = new ArrayList<>();
+    ResultSet resultSet = null;
+    PreparedStatement preparedStatement = DaoUtils.getPreparedStatement(sql);
+    try {
+      resultSet = preparedStatement.executeQuery();
+      //将查询到的每一行数据放入list集合
+      while (resultSet.next()) {
+        Teacher_Student ts = new Teacher_Student();
+        ts.setT_id(resultSet.getString("t_id"));
+        ts.setS_id(Integer.valueOf(resultSet.getString("s_id")));
+        ts.setS_name(resultSet.getString("s_name"));
+        ts.setS_sex(resultSet.getString("s_sex"));
+        ts.setS_address(resultSet.getString("s_address"));
+        ts.setS_department(resultSet.getString("s_department"));
+        ts.setS_class(resultSet.getString("s_class"));
+        ts.setS_grade(resultSet.getString("s_grade"));
+        ts.setS_phone(resultSet.getString("s_phone"));
+        ts.setS_cnum(resultSet.getInt("s_cnum"));
+        //加入list
+        list.add(ts);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }//关闭连接
+    finally {
+      if (resultSet!=null){
+        try {
+          resultSet.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+      if (preparedStatement!=null){
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return list;
+  }
+
 //  根据教师编号查询该老师所有学生
   public List<Teacher_Student_Class> queryStudentResultByTid(Teacher teacher){
     List<Teacher_Student_Class> list = new ArrayList<>();
@@ -82,6 +128,8 @@ public class TeacherDao {
         teacher_student_class.setS_grade(resultSet.getString("s_grade"));
         teacher_student_class.setS_sex(resultSet.getString("s_sex"));
         teacher_student_class.setS_name(resultSet.getString("s_name"));
+        teacher_student_class.setC_credits(resultSet.getString("c_credits"));
+        teacher_student_class.setC_time(resultSet.getString("c_time"));
         list.add(teacher_student_class);
       }
     } catch (SQLException e) {
@@ -317,6 +365,178 @@ public class TeacherDao {
     } catch (SQLException e) {
       e.printStackTrace();
     }//关闭连接
+    finally {
+      if (resultSet!=null){
+        try {
+          resultSet.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+      if (preparedStatement!=null){
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return list;
+  }
+
+  //根据学生s_id录入学生成绩
+  public int EditStudentResultById(String s_id,String value){
+    //标志，返回0的话修改失败，返回1的话修改成功
+    int count = 0;
+    String sql = "UPDATE t_class set c_result=? where s_id=?";
+    PreparedStatement preparedStatement = DaoUtils.getPreparedStatement(sql);
+    ResultSet resultSet = null;
+    try {
+      preparedStatement.setInt(1, Integer.parseInt(value));
+      preparedStatement.setString(2,s_id);
+      //修改的条数
+      count = preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }finally {
+      if (resultSet!=null){
+        try {
+          resultSet.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+      if (preparedStatement!=null){
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return count;
+  }
+  //根据姓名查询学生课程成绩
+  public List<Teacher_Student_Class> queryStudentResultByS_name(String name){
+    List<Teacher_Student_Class> list = new ArrayList<>();
+    String sql = "select *from teacher_student_class where s_name=?";
+    PreparedStatement preparedStatement = DaoUtils.getPreparedStatement(sql);
+    ResultSet resultSet = null;
+    try {
+      preparedStatement.setString(1,name);
+      resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
+        Teacher_Student_Class teacher_student_class = new Teacher_Student_Class();
+        teacher_student_class.setS_id(resultSet.getInt("s_id"));
+        teacher_student_class.setC_name(resultSet.getString("c_name"));
+        teacher_student_class.setC_result(resultSet.getInt("c_result"));
+        teacher_student_class.setS_class(resultSet.getString("s_class"));
+        teacher_student_class.setS_department(resultSet.getString("s_department"));
+        teacher_student_class.setS_grade(resultSet.getString("s_grade"));
+        teacher_student_class.setS_sex(resultSet.getString("s_sex"));
+        teacher_student_class.setS_name(resultSet.getString("s_name"));
+        teacher_student_class.setC_credits(resultSet.getString("c_credits"));
+        teacher_student_class.setC_time(resultSet.getString("c_time"));
+        list.add(teacher_student_class);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    //关闭连接
+    finally {
+      if (resultSet!=null){
+        try {
+          resultSet.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+      if (preparedStatement!=null){
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return list;
+  }
+  //根据学号查找学生课程成绩
+  public List<Teacher_Student_Class> queryStudentResultByS_id(String s_id){
+    List<Teacher_Student_Class> list = new ArrayList<>();
+    String sql = "select * from teacher_student_class where s_id = ?";
+    PreparedStatement preparedStatement = DaoUtils.getPreparedStatement(sql);
+    ResultSet resultSet = null;
+    try {
+      preparedStatement.setInt(1, Integer.parseInt(s_id));
+      resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
+        Teacher_Student_Class teacher_student_class = new Teacher_Student_Class();
+        teacher_student_class.setS_id(resultSet.getInt("s_id"));
+        teacher_student_class.setC_name(resultSet.getString("c_name"));
+        teacher_student_class.setC_result(resultSet.getInt("c_result"));
+        teacher_student_class.setS_class(resultSet.getString("s_class"));
+        teacher_student_class.setS_department(resultSet.getString("s_department"));
+        teacher_student_class.setS_grade(resultSet.getString("s_grade"));
+        teacher_student_class.setS_sex(resultSet.getString("s_sex"));
+        teacher_student_class.setS_name(resultSet.getString("s_name"));
+        teacher_student_class.setC_credits(resultSet.getString("c_credits"));
+        teacher_student_class.setC_time(resultSet.getString("c_time"));
+        list.add(teacher_student_class);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    //关闭连接
+    finally {
+      if (resultSet!=null){
+        try {
+          resultSet.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+      if (preparedStatement!=null){
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return list;
+  }
+
+  //录入成绩模块删除学生信息以及成绩，根据学生编号删除
+  public int deleteStudentResultById(String s_id){
+  return 1;
+  }
+  //查询所有的学生成绩
+  public List<Teacher_Student_Class> queryAllStudentResult(){
+    List<Teacher_Student_Class> list = new ArrayList<>();
+    String sql = "select * from teacher_student_class";
+    PreparedStatement preparedStatement = DaoUtils.getPreparedStatement(sql);
+    ResultSet resultSet = null;
+    try {
+      resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
+        Teacher_Student_Class teacher_student_class = new Teacher_Student_Class();
+        teacher_student_class.setS_id(resultSet.getInt("s_id"));
+        teacher_student_class.setC_name(resultSet.getString("c_name"));
+        teacher_student_class.setC_result(resultSet.getInt("c_result"));
+        teacher_student_class.setS_class(resultSet.getString("s_class"));
+        teacher_student_class.setS_department(resultSet.getString("s_department"));
+        teacher_student_class.setS_grade(resultSet.getString("s_grade"));
+        teacher_student_class.setS_sex(resultSet.getString("s_sex"));
+        teacher_student_class.setS_name(resultSet.getString("s_name"));
+        teacher_student_class.setC_credits(resultSet.getString("c_credits"));
+        teacher_student_class.setC_time(resultSet.getString("c_time"));
+        list.add(teacher_student_class);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    //关闭连接
     finally {
       if (resultSet!=null){
         try {

@@ -10,6 +10,8 @@ import java.util.List;
 public interface TeacherService {
   //教师查询自己的所有学生
   public List<Teacher_Student> queryStudentByTeach(Teacher teacher);
+  //教师查询所有学生信息
+  public List<Teacher_Student> queryAllStudent();
 //  查询所有学生成绩
   public List<Teacher_Student_Class> queryStudentResultByTid(Teacher teacher);
 //    修改学生信息
@@ -26,4 +28,13 @@ public interface TeacherService {
 
   //用学号查询学生
   public List<Teacher_Student> queryStudentById(String id);
+
+  //根据学生学号修改学生成绩
+  public int EditStudentResultById(String s_id,String value);
+  //根据姓名查询学生课程成绩
+  public List<Teacher_Student_Class> queryStudentResultByS_name(String name);
+  //根据学号查找学生课程成绩
+  public List<Teacher_Student_Class> queryStudentResultByS_id(String s_id);
+  //查询所有的学生成绩
+  public List<Teacher_Student_Class> queryAllStudentResult();
 }

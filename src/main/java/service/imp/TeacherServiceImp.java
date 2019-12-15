@@ -17,6 +17,11 @@ public class TeacherServiceImp implements TeacherService {
   }
 
   @Override
+  public List<Teacher_Student> queryAllStudent() {
+    return teacherDao.queryAllStudent();
+  }
+
+  @Override
   public List<Teacher_Student_Class> queryStudentResultByTid(Teacher teacher) {
     return teacherDao.queryStudentResultByTid(teacher);
   }
@@ -49,6 +54,26 @@ public class TeacherServiceImp implements TeacherService {
   @Override
   public List<Teacher_Student> queryStudentById(String id) {
     return teacherDao.queryStudentById(id);
+  }
+
+  @Override
+  public int EditStudentResultById(String s_id, String value) {
+    return teacherDao.EditStudentResultById(s_id,value);
+  }
+
+  @Override
+  public List<Teacher_Student_Class> queryStudentResultByS_name(String name) {
+    return teacherDao.queryStudentResultByS_name(name);
+  }
+
+  @Override
+  public List<Teacher_Student_Class> queryStudentResultByS_id(String s_id) {
+    return teacherDao.queryStudentResultByS_id(s_id);
+  }
+
+  @Override
+  public List<Teacher_Student_Class> queryAllStudentResult() {
+    return teacherDao.queryAllStudentResult();
   }
 
 }
