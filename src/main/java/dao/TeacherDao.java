@@ -202,7 +202,6 @@ public class TeacherDao {
     int count = 0;
     PreparedStatement preparedStatement = DaoUtils.getPreparedStatement(sql);
     try {
-      preparedStatement.setString(1, s_id);
       count = preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
