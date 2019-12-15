@@ -98,17 +98,7 @@
                 ,data = checkStatus.data; //获取选中的数据
             switch(obj.event){
                 case 'add':
-                    layer.open({
-                        type:2
-                        ,title:"添加学生信息"
-                        // closeBtn: false,
-                        ,shift: 1
-                        ,area: ['425px', '700px']
-                        ,shadeClose: true
-                        // ,btn: ['新增', '取消']
-                        ,btnAlign: 'c'
-                        ,content: '<%=basePath%>/teacher/addStudentInfo.jsp'
-                    });
+                   layer.msg("添加学生请进入学生模块~");
                     break;
                 case 'update':
                     if(data.length === 0){
@@ -156,10 +146,10 @@
                         }
                         // 构建数据(x,x,x,x)
                         s_ids = s_ids.substring(0,s_ids.length-1)+")";
-                        layer.confirm('是否确认删除？', function(index){
+                        layer.confirm('是否真的要清除学生成绩吗？', function(index){
                             //请求后台删除，ajax异步请求后台
                             $.ajax({
-                                url: "/DeleteStudentServlet"
+                                url: "/DeleteStudentResultByIdServlet"
                                 ,type:'post'
                                 ,data:{
                                     "xsbh":s_ids
@@ -168,8 +158,7 @@
                                 ,success: function (data) {
                                     if(data>0){
                                         layer.msg("删除成功^_^");
-                                        // location.reload();
-                                        table.reload('testReload');
+                                        table.reload("reload_table");
                                     }
                                     else{
                                         layer.msg("删除失败，请联系管理员>_<");
@@ -185,26 +174,30 @@
 
 
         //监听行工具事件
-        table.on('tool(student_info)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+        table.on('tool(student_info)', function(obj){ //注：tool 是工具条事件名，student_info 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data //获得当前行数据
                 ,layEvent = obj.event//获得 lay-event 对应的值
            if(layEvent === 'del'){
-                layer.confirm('是否删除该学生成绩及其信息？', function(index){
-                    obj.del(); //删除对应行（tr）的DOM结构
-                    layer.close(index);
-                    //向服务端发送删除指令
-                    $.ajax({
-                        url: ""
-                        ,type:'post'
-                        ,data:{
-                            "ejbh":data.ejbh
-                        }
-                        ,dataType: "json"
-                        ,success: function (data) {
-                            alert("success");
-                        }
-                    });
-                });
+               layer.confirm('是否清除此学生成绩？', function(index){
+                   layer.close(index);
+                   //向服务端发送删除指令  (id)
+                   var s_id = "("+data.s_id+")";
+                   $.ajax({
+                       url: "/DeleteStudentResultByIdServlet"
+                       ,type:'post'
+                       ,data:{
+                           "xsbh":s_id
+                       }
+                       ,dataType: "json"
+                       ,success: function (data) {
+                           if(data>0){
+                               layer.msg("清除成功^_^");
+                               // obj.del(); //删除对应行（tr）的DOM结构
+                               table.reload("reload_table");
+                           }
+                       }
+                   });
+               });
             } else if(layEvent === 'edit'){//编辑操作，录入学生成绩
                layer.prompt({
                    title:'录入成绩'

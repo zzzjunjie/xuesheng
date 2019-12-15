@@ -202,7 +202,7 @@ public class TeacherDao {
     int count = 0;
     PreparedStatement preparedStatement = DaoUtils.getPreparedStatement(sql);
     try {
-//      preparedStatement.setString(1, s_id);
+      preparedStatement.setString(1, s_id);
       count = preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -507,10 +507,6 @@ public class TeacherDao {
     return list;
   }
 
-  //录入成绩模块删除学生信息以及成绩，根据学生编号删除
-  public int deleteStudentResultById(String s_id){
-  return 1;
-  }
   //查询所有的学生成绩
   public List<Teacher_Student_Class> queryAllStudentResult(){
     List<Teacher_Student_Class> list = new ArrayList<>();
@@ -555,4 +551,29 @@ public class TeacherDao {
     }
     return list;
   }
+
+  //根据学生ID清除学生成绩
+  public int deleteStudentResultById(String s_id){//s_id的数据格式为(x,x,x,x)
+    //清除学生成绩，实际上就是更改学生成绩为0分
+    String sql = "UPDATE t_class SET c_result=0 WHERE s_id in"+s_id;
+    //标志位
+    int count = 0;
+    PreparedStatement preparedStatement = DaoUtils.getPreparedStatement(sql);
+    try {
+      count = preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }finally {
+      if (preparedStatement!=null){
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+//    如果返回的count是0的话代表清除失败，1代表清除成功
+    return count;
+  }
+
 }

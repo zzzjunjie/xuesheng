@@ -30,7 +30,7 @@
                 </div>
                 </span>
             </a>
-            <nav class="navbar navbar-static-top">
+            <nav class="navbar navbar-static-top" style="background-color: #0C0C0C">
                 <a class="sidebar-toggle">
                     <span class="sr-only">切换</span>
                 </a><span class="index_top"><strong>学生管理</strong></span>
@@ -67,7 +67,7 @@
                 </button>
                 <nav class="page-tabs menuTabs">
                     <div class="page-tabs-content" style="margin-left: 0px;">
-                        <a href="javascript:;" class="menuTab active" data-id="book01.html">学校信息</a>
+                        <a href="javascript:;" class="menuTab active" data-id="teacher/studentInfo.jsp">查询学生信息</a>
                     </div>
                 </nav>
                 <button class="roll-nav roll-right tabRight">
@@ -88,7 +88,7 @@
             </div>
             <div class="content-iframe" style="overflow: hidden;">
                 <div class="mainContent" id="content-main" style="margin: 10px; margin-bottom: 0px; padding: 0;">
-                    <iframe class="LRADMS_iframe" width="100%" height="100%" src="book01.html" frameborder="0" data-id="book01.html"></iframe>
+                    <iframe class="LRADMS_iframe" width="100%" height="100%" src="teacher/studentInfo.jsp" frameborder="0" data-id="teacher/studentInfo.jsp"></iframe>
                 </div>
             </div>
         </div>

@@ -37,4 +37,6 @@ public interface TeacherService {
   public List<Teacher_Student_Class> queryStudentResultByS_id(String s_id);
   //查询所有的学生成绩
   public List<Teacher_Student_Class> queryAllStudentResult();
+  //根据学生ID清除学生成绩
+  public int deleteStudentResultById(String s_id);
 }

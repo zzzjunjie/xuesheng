@@ -1,7 +1,7 @@
-package servlet.teacherservlet;
+package servlet.adminservlet;
 
-import service.TeacherService;
-import service.imp.TeacherServiceImp;
+import service.AdminService;
+import service.imp.AdminServiceImp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,22 +11,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "DeleteStudentServlet",urlPatterns = "/DeleteStudentServlet")
-public class DeleteStudentServlet extends HttpServlet {
+@WebServlet(name = "DeleteUserByIdServlet",urlPatterns = "/DeleteUserByIdServlet")
+public class DeleteUserByIdServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-  doGet(request,response);
+    doGet(request,response);
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     // 请求和响应编码设置
     response.setHeader("content-type", "text/html;charset=UTF-8");
     response.setCharacterEncoding("UTF-8");
-    //获取前端传入的学生编号
-    String xsbh = request.getParameter("xsbh");
-    //老师操作的服务类
-    TeacherService teacherService = new TeacherServiceImp();
-    //删除前端传入学生编号对应的学生信息，返回删除的条数
-    int i = teacherService.DeleteStudentById(xsbh);
+    //获取前端传入的用户编号
+    String u_ids = request.getParameter("u_ids");
+    System.out.println(u_ids);
+    //AdminService操作的服务类
+    AdminService adminService = new AdminServiceImp();
+    //删除对应ID编号的用户，并且返回删除了多少条数据
+    int i = adminService.deleteUserById(u_ids);
     PrintWriter writer = response.getWriter();
     writer.write(String.valueOf(i));
   }

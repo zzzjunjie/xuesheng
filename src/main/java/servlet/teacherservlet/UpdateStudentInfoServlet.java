@@ -19,7 +19,6 @@ public class UpdateStudentInfoServlet extends HttpServlet {
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    response.setCharacterEncoding("utf-8");
     // 请求和响应编码设置
     response.setHeader("content-type", "text/html;charset=UTF-8");
     response.setCharacterEncoding("UTF-8");

@@ -76,4 +76,9 @@ public class TeacherServiceImp implements TeacherService {
     return teacherDao.queryAllStudentResult();
   }
 
+  @Override
+  public int deleteStudentResultById(String s_id) {
+    return teacherDao.deleteStudentResultById(s_id);
+  }
+
 }
